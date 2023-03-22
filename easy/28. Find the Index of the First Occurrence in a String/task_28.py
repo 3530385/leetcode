@@ -6,4 +6,5 @@ def sub_idx(haystack: str, needle: str) -> int:
 
 
 if __name__ == '__main__':
-    plot_time_complexity(lambda n: sub_idx(haystack="abcdef" * (n // 6) + "sad", needle="sad"))
+    plot_time_complexity(lambda inputs: sub_idx(haystack=inputs, needle="sad"),
+                         lambda n: "abcdef" * (n // 6) + "sad", min_of_n=10)
