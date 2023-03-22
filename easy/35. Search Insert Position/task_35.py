@@ -1,7 +1,9 @@
 from time_compexity_plot.plot import plot_time_complexity
 
+
 def bin_search(nums, target, left=0, right=None):
-    if right is None: right = len(nums) - 1
+    if right is None:
+        right = len(nums) - 1
     if left == right - 1:
         if target <= nums[left]:
             return left
@@ -26,5 +28,5 @@ def search_insert(nums: list[int], target: int):
 
 
 if __name__ == '__main__':
-    plot_time_complexity(lambda inputs: search_insert(inputs, 99), lambda n: list(range(n)),
-                         n_start=100, n_stop=int(0.7*10**6), n_step=10**3, min_of_n=100)
+    plot_time_complexity(lambda inputs: search_insert(inputs, 99), lambda n: list(range(n)), n_start=100,
+                         n_stop=int(0.7 * 10 ** 6), min_of_n=100)
