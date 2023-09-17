@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 
 def get_measure_time_func(func: callable, min_of_n, n_times) -> callable:
-    return lambda inputs: min([timeit(lambda: func(inputs),
+    return lambda inputs: min([timeit(lambda: func(*inputs),
                                       number=n_times) for _ in range(min_of_n)])
 
 
