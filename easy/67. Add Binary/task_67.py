@@ -32,7 +32,7 @@ def add_binary_my_faster(a: str, b: str):
 
 
 if __name__ == "__main__":
-    # plot_time_complexity([add_binary, add_binary_my],
-    #                      lambda n: ("010" * (n // 3), "101" * (n // 3)), n_stop=10 ** 5)
+    plot_time_complexity([add_binary, add_binary_my_faster, add_binary_my_slow],
+                         lambda n: ("010" * (n // 3), "101" * (n // 3)), n_stop=10 ** 5)
     print(add_binary_my_faster("10011", "1101"))
     print(add_binary("10011", "1101"))

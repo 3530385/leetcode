@@ -7,9 +7,10 @@ import numpy as np
 from tqdm import tqdm
 
 
-def get_measure_time_func(func: callable, min_of_n, n_times) -> callable:
-    return lambda inputs: min([timeit(lambda: func(*inputs),
-                                      number=n_times) for _ in range(min_of_n)])
+def get_measure_time_func(func: Callable, min_of_n, n_times) -> Callable:
+    return lambda inputs: min([
+        timeit(lambda: func(*inputs),
+               number=n_times) for _ in range(min_of_n)])
 
 
 def save_readme(fig_name: str):
@@ -20,19 +21,43 @@ def save_readme(fig_name: str):
         raise FileExistsError(f"{fig_name} file does not exists")
 
 
-def plot_time_complexity(funcs: Union[list[callable], callable], inputs_func: callable, n_start: int = 10 ** 3,
+def plot_time_complexity(funcs: Union[list[Callable], Callable],
+                         inputs_func: Callable,
+                         n_start: int = 10 ** 3,
                          n_stop: int = 10 ** 6,
-                         n_step: int = 10 ** 3, n_times: int = 1, min_of_n: int = 2,
-                         generate_readme: bool = True, fig_name: str = "complexity.png"):
+                         n_step: int = 10 ** 3,
+                         n_times: int = 1,
+                         min_of_n: int = 2,
+                         generate_readme: bool = True,
+                         fig_name: str = "complexity.png"):
+    """
+    :param funcs:
+        Список функций или одна функция, сложность которой необходимо измерить
+    :param inputs_func:
+        Функция, которая создаёт inputs для тестируемых функций.
+        Она обязательно должна принимать число n в качестве аргумента.
+        Пример:
+            lambda n: [0] * n,
+    :param n_start:
+        Количество данных с которого начать оценку сложности
+    :paam n_stop:
+        Количество данных которым окончить оценку сложности
+    :param n_step:
+        Количество шагов между n_start и n_step
+    :param n_times:
+    :param min_of_n:
+    :param generate_readme:
+    :param fig_name:
+    :return:
+    """
     ns = list(np.arange(n_start, n_stop, n_step))
     if isinstance(funcs, list):
         pass
     elif isinstance(funcs, Callable):
-        func = funcs
-        funcs = [0]
-        funcs[0] = func
+        funcs = [funcs]
     for func in funcs:
-        inputs_gen = (inputs_func(n) for n in np.arange(n_start, n_stop, n_step))
+        inputs_gen = (inputs_func(n)
+                      for n in np.arange(n_start, n_stop, n_step))
         times = get_measure_time_func(func, min_of_n, n_times)
         plt.plot(ns, list(map(times,
                               tqdm(inputs_gen,
@@ -48,4 +73,7 @@ def plot_time_complexity(funcs: Union[list[callable], callable], inputs_func: ca
 
 
 if __name__ == '__main__':
-    plot_time_complexity(lambda inputs: inputs[5], lambda n: [3, 2, 1] * n, n_times=1, min_of_n=20)
+    plot_time_complexity(lambda inputs: inputs[5],
+                         lambda n: [3, 2, 1] * n,
+                         n_times=1,
+                         min_of_n=20)
